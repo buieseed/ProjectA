@@ -24,7 +24,7 @@ public class Register extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username").trim();
 		String password = request.getParameter("password").trim();
@@ -33,7 +33,7 @@ public class Register extends HttpServlet {
 		String passwordError = null;
 		String emailError = null;
 		String userIsExist = null;
-		String newusername = username.replace("\\s+", "");//用正規表示法把空白去掉
+		String newusername = username.replace("\\s+", "");//使用者在輸入空白後再開始輸入字串，用正規表示法把所有空白去掉，才不會在輸入資料時出現空白
 		String newEmail = email.replace("\\s+", "");
 		
 		//第一個字為空白時一樣可以輸入，找一下方法處理，應該是用正規表示法可以處理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -73,9 +73,9 @@ public class Register extends HttpServlet {
 			request.getRequestDispatcher("Register.jsp").forward(request, response);
 		
 		}else{
-			username = username.trim();
+			newusername = newusername.trim();
 			password = password.trim();
-			email = email.trim();
+			newEmail = newEmail.trim();
 			
 			RegisterService registerService = (RegisterService) getServletContext().getAttribute("registerService");
 			//使用者輸入的註冊帳號己有人使用了，加入錯誤訊息中，導回註冊頁面
@@ -88,10 +88,10 @@ public class Register extends HttpServlet {
 			}else{
 				//通過所有註冊驗證，註冊此使用者的帳號
 				System.out.println("此帳號可以用");
-				username = username.trim();
+				newusername = newusername.trim();
 				password = password.trim();
-				email = email.trim();
-				User user = new User(username, password, email);
+				newEmail = newEmail.trim();
+				User user = new User(newusername, password, newEmail);
 				registerService.userRegister(user);
 			}
 			
