@@ -1,5 +1,6 @@
 package com.mywebsite.member.register.model;
 
+import com.mywebsite.member.register.Bean.User;
 import com.mywebsite.member.register.dao.RegisterDAO;
 
 
@@ -20,7 +21,7 @@ public class RegisterService {
 	}
 	
 	//使用者註冊帳號
-	public void userRegister(Member member){
-		this.dao.userRegister;
+	public void userRegister(User user){
+		this.dao.userRegister(user);
 	}
 }
