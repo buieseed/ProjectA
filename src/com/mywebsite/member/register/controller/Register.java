@@ -44,12 +44,12 @@ public class Register extends HttpServlet {
 			errors.add("電子郵件是必要欄位!");
 		}
 		if(errors.size() != 0){
-			request.setAttribute("errors", errors);
 			//Test watch error
 			Iterator<String> it = errors.iterator();
 			while(it.hasNext()){
 				System.out.println(it.next());
 			}
+			request.setAttribute("errors", errors);
 			request.getRequestDispatcher("Register.jsp").forward(request, response);
 		}else{
 			username = username.trim();
@@ -57,11 +57,15 @@ public class Register extends HttpServlet {
 			email = email.trim();
 			
 			RegisterService registerService = (RegisterService) getServletContext().getAttribute("registerService");
-			if(!registerService.userIsExist(username)){
-				System.out.println("yes");
+			//使用者輸入的註冊帳號己有人使用了，加入錯誤訊息中，導回註冊頁面
+			if(registerService.userIsExist(username)){
+				errors.add("此帳號己經有人使用了!");
+				System.out.println("此帳號己經有人使用了");
+				request.setAttribute("errors", errors);
 				request.getRequestDispatcher("Register.jsp").forward(request, response);
 			}else{
-				System.out.println("no");
+				//通過所有註冊驗證，註冊此使用者的帳號
+				System.out.println("此帳號可以用");
 			}
 			
 		}

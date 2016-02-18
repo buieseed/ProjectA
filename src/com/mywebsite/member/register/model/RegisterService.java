@@ -18,4 +18,9 @@ public class RegisterService {
 	public boolean userIsExist(String username){
 		return this.dao.userIsExist(username);
 	}
+	
+	//使用者註冊帳號
+	public void userRegister(Member member){
+		this.dao.userRegister;
+	}
 }

@@ -2,6 +2,7 @@ package com.mywebsite.member.register.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -17,14 +18,20 @@ public class RegisterDAOImpl implements RegisterDAO {
     }
 	@Override
 	public boolean userIsExist(String username) {
+		boolean flag = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet result = null;
 		String userIsExistSQL = "select * from Members where name = ?";
 		try {
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(userIsExistSQL);
 			pstmt.setString(1, username);
-			pstmt.executeQuery();
+			result = pstmt.executeQuery();
+			//有找到資料，代表己經有人使用了
+			if(result.next()){
+				flag = true;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +44,7 @@ public class RegisterDAOImpl implements RegisterDAO {
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return flag;
 	}
 
 }
