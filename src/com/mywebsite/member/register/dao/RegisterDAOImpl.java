@@ -12,10 +12,6 @@ import com.mywebsite.member.register.Bean.User;
 public class RegisterDAOImpl implements RegisterDAO {
 	private DataSource dataSource;
 
-	public RegisterDAOImpl() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public RegisterDAOImpl(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -26,6 +22,7 @@ public class RegisterDAOImpl implements RegisterDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
+		System.out.println("userIsExist");
 		String userIsExistSQL = "select * from Members where username = ?";
 		try {
 			conn = dataSource.getConnection();
@@ -61,7 +58,7 @@ public class RegisterDAOImpl implements RegisterDAO {
 	}
 
 	@Override
-	public void userRegister(User user) {
+	public void registerUser(User user) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String insertSQL = "insert into Members (username, password, email) value (?, ?, ?)";
