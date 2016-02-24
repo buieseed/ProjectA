@@ -22,8 +22,8 @@ public class RegisterDAOImpl implements RegisterDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
-		System.out.println("userIsExist");
-		String userIsExistSQL = "select * from Members where username = ?";
+		String getName = null;
+		String userIsExistSQL = "select username from Members where username = ?";
 		try {
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(userIsExistSQL);

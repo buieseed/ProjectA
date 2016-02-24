@@ -1,4 +1,3 @@
-<%@page import="com.google.gson.JsonObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.mywebsite.member.register.Bean.User, java.util.HashMap, java.util.Map, com.google.gson.Gson"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,14 +5,13 @@
 <head>
 <script type="text/javascript" src="JS/GetXMLHttpRequest.js"></script>
 <script type="text/javascript">
-		var myXhr = createXMLHttpRequestOpject();
+	var myXhr = createXMLHttpRequestOpject();
 	function validName() {
 		if (myXhr) {
 			var username = $("username");
-			var url = "register.do";
+			var url = "AjaxValidate";//導向ajax專用的servlet
 			myXhr.open("POST", url, true);
-			var data = "username=" + username.value + "&password="
-					+ $("password").value + "&email=" + $("email").value;
+			var data = "username=" + username.value;
 			myXhr.setRequestHeader("Content-type",
 					"application/x-www-form-urlencoded");
 			myXhr.onreadystatechange = handleStateChange;
@@ -24,7 +22,11 @@
 
 	function handleStateChange() {
 		if (myXhr.readyState == 4 && myXhr.status == 200) {
-			$("nameHelp").innerHTML = myXhr.responseText;
+			if ("yes" == myXhr.responseText) {
+				$("nameHelp").innerHTML = "此帳號己經有人使用了。";
+			} else {
+				$("nameHelp").innerHTML = "";
+			}
 		}
 	}
 </script>
@@ -36,30 +38,30 @@
 		Map<String, String> errorsMap = (Map<String, String>) request.getAttribute("errorsMap");
 		if (errorsMap != null) {
 	%>
-	${errorsMap.nameIsEmpty } ${errorsMap.passwordIsEmpty } ${errorMap.emailIsEmpty}
+	${errorsMap.nameIsEmpty } ${errorsMap.passwordIsEmpty } ${errorsMap.emailIsEmpty}
 	<%
 		}
 	%>
 
-<form action="register.do" method="post">
-	Your name:
-	<input type="text" name="username" id="username" onblur="validName()" />
-	<br>
-	<span id="nameHelp"></span>
+	<form action="register.do" method="post">
+		Your name:
+		<input type="text" name="username" id="username" onblur="validName()" />
+		<br>
+		<span id="nameHelp"></span>
 
 
-	Password:
-	<input type="password" name="password" id="password" />
-	<br>
+		Password:
+		<input type="password" name="password" id="password" />
+		<br>
 
-	Email Address:
-	<input type="text" name="email" id="email" />
-	<br>
+		Email Address:
+		<input type="text" name="email" id="email" />
+		<br>
 
-	<input type="button" id="btn" value="Create Account" />
-	<input type ="submit" value="submit"/>
-	
-</form>
+		<input type="button" id="btn" value="Create Account" />
+		<input type="submit" value="submit" />
+
+	</form>
 
 
 

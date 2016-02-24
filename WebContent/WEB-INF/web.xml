@@ -13,8 +13,8 @@
     <servlet-name>Register</servlet-name>
     <servlet-class>com.mywebsite.member.register.controller.Register</servlet-class>
     <init-param>
-    	<param-name>ERROR</param-name>
-    	<param-value>Register.jsp</param-value>
+      <param-name>ERROR</param-name>
+      <param-value>Register.jsp</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
@@ -33,9 +33,9 @@
     <listener-class>com.mywebsite.member.register.web.RegisterInitializer</listener-class>
   </listener>
   <resource-ref>
-		<res-ref-name>jdbc/MariaDB</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-		<res-sharing-scope>Shareable</res-sharing-scope>
-	</resource-ref>
+    <res-ref-name>jdbc/MariaDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
 </web-app>

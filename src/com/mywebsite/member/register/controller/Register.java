@@ -1,15 +1,11 @@
 package com.mywebsite.member.register.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
 import com.mywebsite.member.register.Bean.User;
 import com.mywebsite.member.register.model.RegisterService;
 
@@ -19,30 +15,18 @@ import com.mywebsite.member.register.model.RegisterService;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public Register() {
 		super();
-		//
-	}
-
-	// 取得servlet寫在web.xml裡初始參數
-	@Override
-	public void init() throws ServletException {
-		super.init();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("html/text;charset=UTF-8");
-
+			
 		String username = request.getParameter("username").trim();
 		String password = request.getParameter("password").trim();
 		String email = request.getParameter("email").trim();
-		// 改用Gson
-
-		RegisterService registerService = null;
-		HashMap<String, String> errorsMap = new HashMap<String, String>();// 給gsom設定鍵與值
+		RegisterService registerService = (RegisterService) getServletContext().getAttribute("registerService");
+		HashMap<String, String> errorsMap = new HashMap<String, String>();// 給view輸出錯誤訊息設定鍵與值
 		// 開始檢查使用者輸入的帳號內容
 		if (username == null || "".equals("username") || username.length() == 0) {
 			errorsMap.put("nameIsEmpty", "帳號是必要欄位。");
@@ -56,8 +40,7 @@ public class Register extends HttpServlet {
 		// 通過username驗證後，檢查username是否己經有人使用了
 		// 從ServletContexts屬性中取得RegisterService物件，準備對資料庫執行動作
 		else {
-			registerService = (RegisterService) getServletContext().getAttribute("registerService");
-			if (registerService.userIsExist(username)) {
+			if (registerService.userIsExist(username)){
 				errorsMap.put("userIsExist", "此帳號己經有人使用了。");
 			}
 		}
@@ -78,29 +61,10 @@ public class Register extends HttpServlet {
 
 		// 檢查是否有錯誤訊息,map還有另一種檢查為if(errorsMap == null || errorsMap.size() == 0)
 		if (errorsMap.size() != 0) {
-			// 有錯誤訊息，將資料轉為JSON格式輸出,傳給ajax用
-			PrintWriter out = response.getWriter();// 輸出Gson用
-			Gson gson = new Gson();
-			String errorMessages = gson.toJson(errorsMap);
 			request.setAttribute("errorsMap", errorsMap);
-
-			// 將資料輸出
-			out.println(errorMessages);
-
-			out.close();
-			// 將使用者導回註冊頁面
-			// RequestDispatcher requestDispatcher =
-			// request.getRequestDispatcher(this.getInitParameter("ERROR"));
-			// try {
-			// requestDispatcher.forward(request, response);
-			// return;
-			// }catch(Exception e){
-			// System.out.println(e);
-			// }
+			request.getRequestDispatcher(this.getInitParameter("ERROR")).forward(request, response);//導向web.xml中初始參數的ERROR指定的頁面		
 		} else {
 			// 沒有錯誤訊息,準備寫入資料庫
-			// 從ServletContexts屬性中取得RegisterService物件，準備對資料庫值行動作
-			registerService = (RegisterService) getServletContext().getAttribute("registerServlet");
 			// 建立使用者資料物件
 			User user = new User();
 			user.setUsername(username);
@@ -108,14 +72,9 @@ public class Register extends HttpServlet {
 			user.setEmail(email);
 			// 委託registerServlet把資料寫入資料庫
 			registerService.registerUser(user);
-			request.getRequestDispatcher("/Welcome.jsp").forward(request, response);
-			writer(response, errorsMap);
+			//將使用者導向註冊成功後頁面，如登入頁面
+			request.getRequestDispatcher("Welcome.jsp").forward(request, response);
 		}
-	}
-
-	private void writer(HttpServletResponse response, Map<String, String> errorsMap) {
-		// TODO Auto-generated method stub
-
 	}
 }
 

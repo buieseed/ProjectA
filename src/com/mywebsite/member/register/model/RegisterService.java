@@ -13,7 +13,6 @@ public class RegisterService {
 	
 	//確認帳號是己否存在
 	public boolean userIsExist(String username){
-		System.out.println("service");
 		return this.dao.userIsExist(username);
 	}
 	
