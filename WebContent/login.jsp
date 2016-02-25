@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-iam 1
+<form action="login.do" method="post">
+帳號：<input type="text" name="username"><br>
+密碼：<input type="password" name="password"><br>
+<input type="submit" value="submit">
+</form>
 </body>
 </html>

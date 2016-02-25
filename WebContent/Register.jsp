@@ -16,7 +16,6 @@
 					"application/x-www-form-urlencoded");
 			myXhr.onreadystatechange = handleStateChange;
 			myXhr.send(data);
-
 		}
 	}
 
@@ -34,38 +33,22 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%
-		Map<String, String> errorsMap = (Map<String, String>) request.getAttribute("errorsMap");
-		if (errorsMap != null) {
-	%>
-	${errorsMap.nameIsEmpty } ${errorsMap.passwordIsEmpty } ${errorsMap.emailIsEmpty}
-	<%
-		}
-	%>
-
 	<form action="register.do" method="post">
 		Your name:
 		<input type="text" name="username" id="username" onblur="validName()" />
 		<br>
-		<span id="nameHelp"></span>
-
-
+		${errorsMap.nameIsEmpty}${errorsMap.nameTooShort }${errorsMap.userIsExist} 
 		Password:
 		<input type="password" name="password" id="password" />
 		<br>
-
+		${errorsMap.passwordIsEmpty }${nameTooShort}
 		Email Address:
 		<input type="text" name="email" id="email" />
 		<br>
-
+		${errorsMap.emailIsEmpty}
 		<input type="button" id="btn" value="Create Account" />
 		<input type="submit" value="submit" />
-
 	</form>
-
-
-
-
 	<!--  <div style="color: red;"><%=request.getAttribute("userIsExist")%></div> -->
 
 </body>

@@ -22,15 +22,18 @@
     <url-pattern>/register.do</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>TestServlet</servlet-name>
-    <servlet-class>com.mywebsite.member.register.controller.TestServlet</servlet-class>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.mywebsite.member.login.controller.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>TestServlet</servlet-name>
-    <url-pattern>/testServlet.do</url-pattern>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login.do</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>com.mywebsite.member.register.web.RegisterInitializer</listener-class>
+  </listener>
+   <listener>
+    <listener-class>com.mywebsite.member.login.web.LoginInitializer</listener-class>
   </listener>
   <resource-ref>
     <res-ref-name>jdbc/MariaDB</res-ref-name>
